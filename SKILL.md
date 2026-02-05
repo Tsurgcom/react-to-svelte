@@ -1,6 +1,10 @@
 ---
 name: react-to-svelte
 description: Convert React components to Svelte 5 using runes syntax. Handles hooks, pure components, JSX, effects, context, refs, events, and accessibility.
+license: MIT
+metadata:
+  author: tsurg
+  version: "1.0.0"
 ---
 
 # React to Svelte 5 Converter
@@ -18,8 +22,9 @@ Convert React components to Svelte 5 components using modern runes syntax.
 ### 1. Component Structure
 
 **React:**
+
 ```jsx
-import React from 'react';
+import React from "react";
 
 function MyComponent() {
   return <div>Hello</div>;
@@ -29,6 +34,7 @@ export default MyComponent;
 ```
 
 **Svelte 5:**
+
 ```svelte
 <div>Hello</div>
 ```
@@ -36,12 +42,14 @@ export default MyComponent;
 ### 2. State Management
 
 **React useState:**
+
 ```jsx
 const [count, setCount] = useState(0);
 setCount(count + 1);
 ```
 
 **Svelte $state:**
+
 ```svelte
 <script>
   let count = $state(0);
@@ -50,15 +58,17 @@ setCount(count + 1);
 ```
 
 **React useReducer:**
+
 ```jsx
 const [state, dispatch] = useReducer(reducer, initialState);
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   let state = $state(initialState);
-  
+
   function dispatch(action) {
     state = reducer(state, action);
   }
@@ -68,11 +78,13 @@ const [state, dispatch] = useReducer(reducer, initialState);
 ### 3. Derived Values
 
 **React useMemo:**
+
 ```jsx
 const doubled = useMemo(() => count * 2, [count]);
 ```
 
 **Svelte $derived:**
+
 ```svelte
 <script>
   let doubled = $derived(count * 2);
@@ -80,11 +92,13 @@ const doubled = useMemo(() => count * 2, [count]);
 ```
 
 **React useCallback:**
+
 ```jsx
 const handleClick = useCallback(() => {}, []);
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   // Just a regular function - no need for useCallback
@@ -95,14 +109,16 @@ const handleClick = useCallback(() => {}, []);
 ### 4. Side Effects
 
 **React useEffect:**
+
 ```jsx
 useEffect(() => {
-  console.log('mounted or updated');
-  return () => console.log('cleanup');
+  console.log("mounted or updated");
+  return () => console.log("cleanup");
 }, [dep]);
 ```
 
 **Svelte $effect:**
+
 ```svelte
 <script>
   $effect(() => {
@@ -113,11 +129,13 @@ useEffect(() => {
 ```
 
 **React useLayoutEffect:**
+
 ```jsx
 useLayoutEffect(() => {}, []);
 ```
 
 **Svelte $effect.pre:**
+
 ```svelte
 <script>
   $effect.pre(() => {});
@@ -127,13 +145,19 @@ useLayoutEffect(() => {}, []);
 ### 5. Props
 
 **React:**
+
 ```jsx
 function Button({ label, onClick, disabled = false }) {
-  return <button onClick={onClick} disabled={disabled}>{label}</button>;
+  return (
+    <button onClick={onClick} disabled={disabled}>
+      {label}
+    </button>
+  );
 }
 ```
 
 **Svelte $props:**
+
 ```svelte
 <script>
   let { label, onclick, disabled = false } = $props();
@@ -143,6 +167,7 @@ function Button({ label, onClick, disabled = false }) {
 ```
 
 **With TypeScript:**
+
 ```svelte
 <script lang="ts">
   interface Props {
@@ -150,7 +175,7 @@ function Button({ label, onClick, disabled = false }) {
     onclick: () => void;
     disabled?: boolean;
   }
-  
+
   let { label, onclick, disabled = false }: Props = $props();
 </script>
 ```
@@ -158,11 +183,13 @@ function Button({ label, onClick, disabled = false }) {
 ### 6. Pure Components
 
 **React memo:**
+
 ```jsx
 const MemoizedComponent = React.memo(Component);
 ```
 
 **Svelte:**
+
 ```svelte
 <!-- No equivalent needed - Svelte components are pure by default -->
 ```
@@ -170,16 +197,19 @@ const MemoizedComponent = React.memo(Component);
 ### 7. Event Handling
 
 **React:**
+
 ```jsx
 <button onClick={handleClick} onMouseEnter={handleHover}>
 ```
 
 **Svelte:**
+
 ```svelte
 <button onclick={handleClick} onmouseenter={handleHover}>
 ```
 
 **Event object:**
+
 ```svelte
 <button onclick={(e) => handleClick(e)}>
 ```
@@ -187,12 +217,18 @@ const MemoizedComponent = React.memo(Component);
 ### 8. Conditional Rendering
 
 **React:**
+
 ```jsx
-{isVisible && <Modal />}
-{isLoading ? <Spinner /> : <Content />}
+{
+  isVisible && <Modal />;
+}
+{
+  isLoading ? <Spinner /> : <Content />;
+}
 ```
 
 **Svelte:**
+
 ```svelte
 {#if isVisible}
   <Modal />
@@ -206,11 +242,15 @@ const MemoizedComponent = React.memo(Component);
 ```
 
 **React ternary with null:**
+
 ```jsx
-{condition ? <A /> : null}
+{
+  condition ? <A /> : null;
+}
 ```
 
 **Svelte:**
+
 ```svelte
 {#if condition}
   <A />
@@ -220,13 +260,15 @@ const MemoizedComponent = React.memo(Component);
 ### 9. List Rendering
 
 **React:**
+
 ```jsx
-{items.map((item, index) => (
-  <li key={item.id}>{item.name}</li>
-))}
+{
+  items.map((item, index) => <li key={item.id}>{item.name}</li>);
+}
 ```
 
 **Svelte:**
+
 ```svelte
 {#each items as item, index (item.id)}
   <li>{item.name}</li>
@@ -234,6 +276,7 @@ const MemoizedComponent = React.memo(Component);
 ```
 
 **With index only:**
+
 ```svelte
 {#each items as item, i}
   <li>{i}: {item.name}</li>
@@ -243,12 +286,14 @@ const MemoizedComponent = React.memo(Component);
 ### 10. Context
 
 **React:**
+
 ```jsx
-const ThemeContext = createContext('light');
+const ThemeContext = createContext("light");
 const theme = useContext(ThemeContext);
 ```
 
 **Svelte:**
+
 ```svelte
 <!-- Provider.svelte -->
 <script>
@@ -266,12 +311,14 @@ const theme = useContext(ThemeContext);
 ### 11. Refs
 
 **React:**
+
 ```jsx
 const inputRef = useRef(null);
-<input ref={inputRef} />
+<input ref={inputRef} />;
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   let inputRef = $state<HTMLInputElement | null>(null);
@@ -283,12 +330,14 @@ const inputRef = useRef(null);
 ### 12. Forms and Two-Way Binding
 
 **React:**
+
 ```jsx
-const [value, setValue] = useState('');
-<input value={value} onChange={(e) => setValue(e.target.value)} />
+const [value, setValue] = useState("");
+<input value={value} onChange={(e) => setValue(e.target.value)} />;
 ```
 
 **Svelte bind:**
+
 ```svelte
 <script>
   let value = $state('');
@@ -298,6 +347,7 @@ const [value, setValue] = useState('');
 ```
 
 **Checkbox:**
+
 ```svelte
 <input type="checkbox" bind:checked={isChecked} />
 ```
@@ -305,6 +355,7 @@ const [value, setValue] = useState('');
 ### 13. Slots vs Children
 
 **React:**
+
 ```jsx
 function Card({ children, header }) {
   return (
@@ -317,6 +368,7 @@ function Card({ children, header }) {
 ```
 
 **Svelte:**
+
 ```svelte
 <!-- Card.svelte -->
 <div>
@@ -336,11 +388,13 @@ function Card({ children, header }) {
 ### 14. Styles
 
 **React (CSS-in-JS):**
+
 ```jsx
 <div style={{ color: 'red', fontSize: 14 }}>
 ```
 
 **Svelte (scoped styles):**
+
 ```svelte
 <div class="red-text">Content</div>
 
@@ -353,6 +407,7 @@ function Card({ children, header }) {
 ```
 
 **Dynamic styles:**
+
 ```svelte
 <div style:color={dynamicColor} style:font-size="{size}px">
 ```
@@ -362,22 +417,26 @@ function Card({ children, header }) {
 ### Custom Hooks to Functions
 
 **React custom hook:**
+
 ```jsx
 function useCounter(initial = 0) {
   const [count, setCount] = useState(initial);
-  const increment = () => setCount(c => c + 1);
+  const increment = () => setCount((c) => c + 1);
   return { count, increment };
 }
 ```
 
 **Svelte:**
+
 ```javascript
 // counter.svelte.js
 export function createCounter(initial = 0) {
   let count = $state(initial);
   return {
-    get count() { return count; },
-    increment: () => count++
+    get count() {
+      return count;
+    },
+    increment: () => count++,
   };
 }
 ```
@@ -396,6 +455,7 @@ export function createCounter(initial = 0) {
 ### Higher-Order Components
 
 **React HOC:**
+
 ```jsx
 function withAuth(Component) {
   return function Wrapped(props) {
@@ -406,6 +466,7 @@ function withAuth(Component) {
 ```
 
 **Svelte (use wrapper component):**
+
 ```svelte
 <!-- WithAuth.svelte -->
 <script>
@@ -425,11 +486,13 @@ function withAuth(Component) {
 ### ARIA Attributes
 
 **React:**
+
 ```jsx
 <div aria-label="Close dialog" aria-expanded={isOpen}>
 ```
 
 **Svelte:**
+
 ```svelte
 <div aria-label="Close dialog" aria-expanded={isOpen}>
 ```
@@ -437,11 +500,13 @@ function withAuth(Component) {
 ### Keyboard Events
 
 **React:**
+
 ```jsx
 <div onKeyDown={handleKeyDown} tabIndex={0} role="button">
 ```
 
 **Svelte:**
+
 ```svelte
 <div onkeydown={handleKeyDown} tabindex="0" role="button">
 ```
@@ -449,6 +514,7 @@ function withAuth(Component) {
 ### Focus Management
 
 **React:**
+
 ```jsx
 const buttonRef = useRef(null);
 useEffect(() => {
@@ -457,10 +523,11 @@ useEffect(() => {
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   let buttonRef = $state<HTMLButtonElement | null>(null);
-  
+
   $effect(() => {
     buttonRef?.focus();
   });
@@ -472,6 +539,7 @@ useEffect(() => {
 ### Screen Reader Announcements
 
 **React:**
+
 ```jsx
 <div aria-live="polite" aria-atomic="true">
   {announcement}
@@ -479,6 +547,7 @@ useEffect(() => {
 ```
 
 **Svelte:**
+
 ```svelte
 <div aria-live="polite" aria-atomic="true">
   {announcement}
@@ -488,6 +557,7 @@ useEffect(() => {
 ### Svelte a11y Warnings
 
 Svelte provides compile-time accessibility warnings:
+
 - Missing alt attributes on images
 - Invalid ARIA attributes
 - Missing keyboard handlers on interactive elements
@@ -496,11 +566,13 @@ Svelte provides compile-time accessibility warnings:
 ### Reduced Motion
 
 **React:**
+
 ```jsx
-const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 ```
 
 **Svelte (using CSS):**
+
 ```svelte
 <style>
   @media (prefers-reduced-motion: reduce) {
@@ -543,21 +615,21 @@ const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 ### Counter Component
 
 **React:**
+
 ```jsx
-import { useState } from 'react';
+import { useState } from "react";
 
 function Counter({ initial = 0, step = 1 }) {
   const [count, setCount] = useState(initial);
-  
+
   return (
-    <button onClick={() => setCount(c => c + step)}>
-      Count: {count}
-    </button>
+    <button onClick={() => setCount((c) => c + step)}>Count: {count}</button>
   );
 }
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   let { initial = 0, step = 1 } = $props();
@@ -572,36 +644,38 @@ function Counter({ initial = 0, step = 1 }) {
 ### Fetch Data Component
 
 **React:**
+
 ```jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function UserProfile({ userId }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     setLoading(true);
     fetch(`/api/users/${userId}`)
-      .then(r => r.json())
-      .then(data => {
+      .then((r) => r.json())
+      .then((data) => {
         setUser(data);
         setLoading(false);
       });
   }, [userId]);
-  
+
   if (loading) return <div>Loading...</div>;
   return <div>{user?.name}</div>;
 }
 ```
 
 **Svelte:**
+
 ```svelte
 <script>
   let { userId } = $props();
-  
+
   let user = $state(null);
   let loading = $state(true);
-  
+
   $effect(() => {
     loading = true;
     fetch(`/api/users/${userId}`)
